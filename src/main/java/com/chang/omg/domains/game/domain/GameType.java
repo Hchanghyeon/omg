@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum GameType {
     MAPLESTORYM("메이플스토리M"),
-    CARTRIDER("카트라이더러쉬플러스"),
+    KARTRIDER("카트라이더러쉬플러스"),
     V4("V4"),
     HIT2("히트2"),
     KINGDOMWINDS("바람의나라:연"),
