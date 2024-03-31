@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.chang.omg.global.config.property.MapleStoryMProperties;
+import com.chang.omg.global.config.property.NexonCommonProperties;
 import com.chang.omg.infrastructure.api.maplestorym.dto.Character;
 import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterBasic;
 import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterGuild;
@@ -22,6 +23,7 @@ public class MapleStoryMApiRestTemplate implements MapleStoryMApi {
 
     private final RestTemplate restTemplate;
     private final MapleStoryMProperties mapleStoryMProperties;
+    private final NexonCommonProperties nexonCommonProperties;
 
     public Character getCharacterOcid(final String characterName, final String worldName) {
         return restTemplate.exchange(
@@ -34,7 +36,7 @@ public class MapleStoryMApiRestTemplate implements MapleStoryMApi {
 
     private String createOcidApiUri(final String characterName, final String worldName) {
         return UriComponentsBuilder.fromHttpUrl(
-                        mapleStoryMProperties.getBaseUrl() + mapleStoryMProperties.getOcidApiUri()
+                        nexonCommonProperties.getBaseUrl() + mapleStoryMProperties.getOcidApiUri()
                 )
                 .queryParam("character_name", characterName)
                 .queryParam("world_name", worldName)
@@ -83,7 +85,7 @@ public class MapleStoryMApiRestTemplate implements MapleStoryMApi {
     }
 
     private String createApiUrl(final String ocid, final String requestUri) {
-        return UriComponentsBuilder.fromHttpUrl(mapleStoryMProperties.getBaseUrl() + requestUri)
+        return UriComponentsBuilder.fromHttpUrl(nexonCommonProperties.getBaseUrl() + requestUri)
                 .queryParam("ocid", ocid)
                 .build()
                 .toUriString();
@@ -91,7 +93,7 @@ public class MapleStoryMApiRestTemplate implements MapleStoryMApi {
 
     private HttpHeaders createHttpHeaders() {
         final HttpHeaders headers = new HttpHeaders();
-        headers.add(mapleStoryMProperties.getHeaderKey(), mapleStoryMProperties.getHeaderValue());
+        headers.add(nexonCommonProperties.getHeaderKey(), mapleStoryMProperties.getHeaderValue());
 
         return headers;
     }
