@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.chang.omg.application.game.GameService;
 import com.chang.omg.domains.game.domain.GameCharacterSearchRank;
 import com.chang.omg.domains.game.domain.GameType;
+import com.chang.omg.presentation.game.dto.KartRiderUserInfoResponse;
 import com.chang.omg.presentation.game.dto.MapleStoryMCharacterInfoResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,13 @@ public class GameController {
         );
 
         return ResponseEntity.ok(mapleStoryMCharacterInfoResponse);
+    }
+
+    @GetMapping("/kartrider")
+    public ResponseEntity<KartRiderUserInfoResponse> getUserInfo(@RequestParam final String userName) {
+        final KartRiderUserInfoResponse kartRiderUserInfoResponse = gameService.getKartRiderUserInfo(userName);
+
+        return ResponseEntity.ok(kartRiderUserInfoResponse);
     }
 
     @GetMapping("/{gameType}/rank")

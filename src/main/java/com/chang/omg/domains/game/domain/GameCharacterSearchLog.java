@@ -36,7 +36,7 @@ public class GameCharacterSearchLog extends BaseEntity {
     @Builder
     private GameCharacterSearchLog(final GameType gameType, final String worldName, final String characterName) {
         this.gameType = Objects.requireNonNull(gameType);
-        this.worldName = Objects.requireNonNull(worldName);
+        this.worldName = worldName;
         this.characterName = Objects.requireNonNull(characterName);
     }
 }
