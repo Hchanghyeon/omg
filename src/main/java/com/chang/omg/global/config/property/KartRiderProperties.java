@@ -7,13 +7,11 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-@ConfigurationProperties(prefix = "api.nexon.maplestorym")
-public class MapleStoryMProperties {
-    
+@ConfigurationProperties(prefix = "api.nexon.kartrider")
+public class KartRiderProperties {
+
     private final String headerValue;
-    private final String ocidApiUri;
+    private final String ouidApiUri;
     private final String basicApiUri;
-    private final String itemApiUri;
-    private final String statApiUri;
-    private final String guildApiUri;
+    private final String titleApiUri;
 }
