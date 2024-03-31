@@ -29,8 +29,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GameService {
 
-    private final MapleStoryMApi mapleStoryMApi;
     private final KartRiderApi kartRiderApi;
+    private final MapleStoryMApi mapleStoryMApi;
     private final GameCharacterSearchLogRepository gameCharacterSearchLogRepository;
 
     public MapleStoryMCharacterInfoResponse getMapleStoryMCharacterInfo(
@@ -43,7 +43,7 @@ public class GameService {
         final CharacterStat characterStat = mapleStoryMApi.getCharacterStat(character.ocid());
         final CharacterGuild characterGuild = mapleStoryMApi.getCharacterGuild(character.ocid());
 
-        saveGameCharacterSearchLog(worldName, characterName);
+        saveGameCharacterSearchLog(GameType.MAPLESTORYM, worldName, characterName);
 
         return MapleStoryMCharacterInfoResponse.of(
                 characterBasic,
@@ -59,14 +59,18 @@ public class GameService {
         final UserBasic userBasic = kartRiderApi.getUserBasic(ouid);
         final UserTitleEquipment userTitleEquipment = kartRiderApi.getUserTitleEquipment(ouid);
 
-        saveGameCharacterSearchLog(null, userBasic.racerName());
+        saveGameCharacterSearchLog(GameType.KARTRIDER, null, userBasic.racerName());
 
         return KartRiderUserInfoResponse.of(userBasic, userTitleEquipment);
     }
 
-    private void saveGameCharacterSearchLog(final String worldName, final String characterName) {
+    private void saveGameCharacterSearchLog(
+            final GameType gameType,
+            final String worldName,
+            final String characterName
+    ) {
         final GameCharacterSearchLog gameCharacterSearchLog = GameCharacterSearchLog.builder()
-                .gameType(GameType.MAPLESTORYM)
+                .gameType(gameType)
                 .worldName(worldName)
                 .characterName(characterName)
                 .build();
