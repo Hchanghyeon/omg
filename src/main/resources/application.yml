@@ -10,13 +10,19 @@ spring:
         query.in_clause_parameter_padding: true
 api:
   nexon:
+    common:
+      base_url: ${NEXON_BASE_URL}
+      header_key: ${NEXON_HEADER_KEY}
     maplestorym:
-      base_url: ${MAPLESTORYM_BASE_URL}
-      header_key: ${MAPLESTORYM_HEADER_KEY}
       header_value: ${MAPLESTORYM_HEADER_VALUE}
       ocid_api_uri: ${MAPLESTORYM_OCID_API_URI}
       basic_api_uri: ${MAPLESTORYM_BASIC_API_URI}
       item_api_uri: ${MAPLESTORYM_ITEM_API_URI}
       stat_api_uri: ${MAPLESTORYM_STAT_API_URI}
       guild_api_uri: ${MAPLESTORYM_GUILD_API_URI}
+    kartrider:
+      header_value: ${KARTRIDER_HEADER_VALUE}
+      ouid_api_uri: ${KARTRIDER_OUID_API_URI}
+      basic_api_uri: ${KARTRIDER_BASIC_API_URI}
+      title_api_uri: ${KARTRIDER_TITLE_API_URI}
 
