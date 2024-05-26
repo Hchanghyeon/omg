@@ -6,9 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.chang.omg.domains.game.domain.GameCharacterSearchLog;
-import com.chang.omg.domains.game.domain.GameCharacterSearchRank;
 import com.chang.omg.domains.game.domain.GameType;
 import com.chang.omg.domains.game.repository.GameCharacterSearchLogRepository;
+import com.chang.omg.domains.rank.domain.CharacterInfo;
+import com.chang.omg.domains.rank.repository.GameRankingRedisRepository;
 import com.chang.omg.infrastructure.api.kartrider.KartRiderApi;
 import com.chang.omg.infrastructure.api.kartrider.dto.User;
 import com.chang.omg.infrastructure.api.kartrider.dto.UserBasic;
@@ -19,6 +20,7 @@ import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterBasic;
 import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterGuild;
 import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterItemEquipment;
 import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterStat;
+import com.chang.omg.presentation.game.dto.CharacterRankingResponse;
 import com.chang.omg.presentation.game.dto.KartRiderUserInfoResponse;
 import com.chang.omg.presentation.game.dto.MapleStoryMCharacterInfoResponse;
 
@@ -32,6 +34,7 @@ public class GameService {
     private final KartRiderApi kartRiderApi;
     private final MapleStoryMApi mapleStoryMApi;
     private final GameCharacterSearchLogRepository gameCharacterSearchLogRepository;
+    private final GameRankingRedisRepository gameRankingRedisRepository;
 
     public MapleStoryMCharacterInfoResponse getMapleStoryMCharacterInfo(
             final String characterName,
@@ -76,10 +79,17 @@ public class GameService {
                 .build();
 
         gameCharacterSearchLogRepository.save(gameCharacterSearchLog);
+
+        final CharacterInfo characterInfo = CharacterInfo.builder()
+                .worldName(worldName)
+                .characterName(characterName)
+                .build();
+
+        gameRankingRedisRepository.createOrIncrementScore(gameType, characterInfo);
     }
 
     @Transactional(readOnly = true)
-    public List<GameCharacterSearchRank> getGameCharacterSearchRank(final GameType gameType) {
-        return gameCharacterSearchLogRepository.findGameCharacterSearchRank(gameType);
+    public List<CharacterRankingResponse> getGameCharacterSearchRank(final GameType gameType) {
+        return gameRankingRedisRepository.findGameCharacterSearchRank(gameType);
     }
 }
