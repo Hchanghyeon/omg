@@ -8,6 +8,13 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  data:
+    redis:
+      host: ${LOCAL_REDIS_HOST}
+      password: ${LOCAL_REDIS_PASSWORD}
+      port: ${LOCAL_REDIS_PORT}
+
 cors:
   urls:
     - http://localhost:3000
+

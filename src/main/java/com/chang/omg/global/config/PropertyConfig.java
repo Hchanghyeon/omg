@@ -7,13 +7,15 @@ import com.chang.omg.global.config.property.CorsProperties;
 import com.chang.omg.global.config.property.KartRiderProperties;
 import com.chang.omg.global.config.property.MapleStoryMProperties;
 import com.chang.omg.global.config.property.NexonCommonProperties;
+import com.chang.omg.global.config.property.RedisProperties;
 
 @Configuration
 @EnableConfigurationProperties(value = {
         CorsProperties.class,
         MapleStoryMProperties.class,
         KartRiderProperties.class,
-        NexonCommonProperties.class
+        NexonCommonProperties.class,
+        RedisProperties.class
 })
 public class PropertyConfig {
 

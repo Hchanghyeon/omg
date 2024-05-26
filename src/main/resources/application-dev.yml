@@ -3,6 +3,11 @@ spring:
     url: ${DEV_MYSQL_URL}
     username: ${DEV_MYSQL_USERNAME}
     password: ${DEV_MYSQL_PASSWORD}
+  data:
+    redis:
+      host: ${DEV_REDIS_HOST}
+      password: ${DEV_REDIS_PASSWORD}
+      port: ${DEV_REDIS_PORT}
 
 cors:
   urls:
