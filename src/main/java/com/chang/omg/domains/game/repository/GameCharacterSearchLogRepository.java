@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.chang.omg.domains.game.domain.GameCharacterSearchLog;
-import com.chang.omg.domains.game.domain.GameCharacterSearchRank;
 import com.chang.omg.domains.game.domain.GameType;
+import com.chang.omg.presentation.game.dto.CharacterRankingResponse;
 
 public interface GameCharacterSearchLogRepository extends JpaRepository<GameCharacterSearchLog, Long> {
 
+    @Deprecated
     @Query("""
-            SELECT new com.chang.omg.domains.game.domain.GameCharacterSearchRank
+            SELECT new com.chang.omg.presentation.game.dto.CharacterRankingResponse
             (g.worldName, g.characterName, COUNT(g.characterName))
             FROM GameCharacterSearchLog g 
             WHERE g.createdAt > CURRENT_DATE AND g.gameType =:gameType
@@ -20,5 +21,5 @@ public interface GameCharacterSearchLogRepository extends JpaRepository<GameChar
             ORDER BY COUNT(g.characterName) DESC
             LIMIT 5
             """)
-    List<GameCharacterSearchRank> findGameCharacterSearchRank(final GameType gameType);
+    List<CharacterRankingResponse> findGameCharacterSearchRank(final GameType gameType);
 }
