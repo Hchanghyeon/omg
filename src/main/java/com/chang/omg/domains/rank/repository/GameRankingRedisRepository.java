@@ -14,7 +14,9 @@ import com.chang.omg.presentation.game.dto.CharacterRankingResponse;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class GameRankingRedisRepository {
@@ -50,5 +52,11 @@ public class GameRankingRedisRepository {
                     );
                 })
                 .toList();
+    }
+
+    public void removeRanking(final GameType gameType) {
+        final boolean isDeleted = redisTemplate.delete(gameType.toString());
+
+        log.info("GameType: {} -> removed: {}", gameType.getName(), isDeleted);
     }
 }
