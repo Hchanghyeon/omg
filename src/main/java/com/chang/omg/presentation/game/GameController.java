@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chang.omg.application.game.GameService;
-import com.chang.omg.domains.game.domain.GameCharacterSearchRank;
 import com.chang.omg.domains.game.domain.GameType;
+import com.chang.omg.presentation.game.dto.CharacterRankingResponse;
 import com.chang.omg.presentation.game.dto.KartRiderUserInfoResponse;
 import com.chang.omg.presentation.game.dto.MapleStoryMCharacterInfoResponse;
 
@@ -45,7 +45,7 @@ public class GameController {
     }
 
     @GetMapping("/{gameType}/rank")
-    public ResponseEntity<List<GameCharacterSearchRank>> getGameCharacterSearchRank(
+    public ResponseEntity<List<CharacterRankingResponse>> getGameCharacterSearchRank(
             @PathVariable final GameType gameType) {
         return ResponseEntity.ok(gameService.getGameCharacterSearchRank(gameType));
     }
