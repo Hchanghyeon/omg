@@ -7,3 +7,20 @@ spring:
 cors:
   urls:
     - http://localhost:3000
+api:
+  nexon:
+    common:
+      base_url: http://localhost:8080/nexon
+      header_key: test_header_key
+    maplestorym:
+      header_value: test_header_value_maplestory
+      ocid_api_uri: /test/maplestorym/ocid
+      basic_api_uri: /test/maplestorym/basic
+      item_api_uri: /test/maplestorym/item
+      stat_api_uri: /test/maplestorym/stat
+      guild_api_uri: /test/maplestorym/guild
+    kartrider:
+      header_value: test_header_value_kartrider
+      ouid_api_uri: /test/kartrider/ouid
+      basic_api_uri: /test/kartrider/basic
+      title_api_uri: /test/kartrider/title
