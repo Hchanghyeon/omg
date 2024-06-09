@@ -4,7 +4,7 @@ import java.util.List;
 
 public record CharacterStat(List<Stat> stat) {
 
-    record Stat(String statName, String statValue) {
+    public record Stat(String statName, String statValue) {
 
     }
 }
