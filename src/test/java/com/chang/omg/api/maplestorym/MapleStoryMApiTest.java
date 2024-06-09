@@ -20,6 +20,9 @@ import com.chang.omg.infrastructure.api.maplestorym.MapleStoryMApi;
 import com.chang.omg.infrastructure.api.maplestorym.MapleStoryMApiRestTemplate;
 import com.chang.omg.infrastructure.api.maplestorym.dto.Character;
 import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterBasic;
+import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterGuild;
+import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterItemEquipment;
+import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterStat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,7 +65,7 @@ class MapleStoryMApiTest extends IntegrationApiTest {
 
         // then
         assertThat(character.ocid()).isEqualTo(expectedCharacter.ocid());
-        
+
         mockRestServiceServer.verify();
     }
 
@@ -97,6 +100,84 @@ class MapleStoryMApiTest extends IntegrationApiTest {
         assertThat(characterBasic.characterGender()).isEqualTo(expectedCharacterBasic.characterGender());
         assertThat(characterBasic.characterExp()).isEqualTo(expectedCharacterBasic.characterExp());
         assertThat(characterBasic.characterLevel()).isEqualTo(expectedCharacterBasic.characterLevel());
+
+        mockRestServiceServer.verify();
+    }
+
+    @Test
+    @DisplayName("캐릭터의 Ocid로 요청했을 때 캐릭터의 아이템 정보들을 불러올 수 있다.")
+    void returnCharacterItemEquipmentWithCharacterOcid() throws JsonProcessingException {
+        // given
+        final String expectedApiUrl = UriComponentsBuilder.fromHttpUrl(
+                        nexonCommonProperties.getBaseUrl() + mapleStoryMProperties.getItemApiUri()
+                )
+                .queryParam("ocid", ocid)
+                .toUriString();
+
+        final CharacterItemEquipment expectedCharacterItemEquipment = MapleStoryMDtoFixtures.characterItemEquipmentBuild();
+        final String expectedResponse = objectMapper.writeValueAsString(expectedCharacterItemEquipment);
+
+        mockRestServiceServer.expect(requestTo(expectedApiUrl))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_JSON));
+
+        // when
+        final CharacterItemEquipment characterItemEquipment = mapleStoryMApi.getCharacterItem(ocid);
+
+        // then
+        assertThat(characterItemEquipment).usingRecursiveComparison().isEqualTo(expectedCharacterItemEquipment);
+
+        mockRestServiceServer.verify();
+    }
+
+    @Test
+    @DisplayName("캐릭터의 Ocid로 요청했을 때 캐릭터의 스텟을 불러올 수 있다.")
+    void returnCharacterStatWithCharacterOcid() throws JsonProcessingException {
+        // given
+        final String expectedApiUrl = UriComponentsBuilder.fromHttpUrl(
+                        nexonCommonProperties.getBaseUrl() + mapleStoryMProperties.getStatApiUri()
+                )
+                .queryParam("ocid", ocid)
+                .toUriString();
+
+        final CharacterStat expectedCharacterStat = MapleStoryMDtoFixtures.characterStat();
+        final String expectedResponse = objectMapper.writeValueAsString(expectedCharacterStat);
+
+        mockRestServiceServer.expect(requestTo(expectedApiUrl))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_JSON));
+
+        // when
+        final CharacterStat characterStat = mapleStoryMApi.getCharacterStat(ocid);
+
+        // then
+        assertThat(characterStat).usingRecursiveComparison().isEqualTo(expectedCharacterStat);
+
+        mockRestServiceServer.verify();
+    }
+
+    @Test
+    @DisplayName("캐릭터의 Ocid로 요청했을 때 캐릭터의 길드 정보를 불러올 수 있다.")
+    void returnCharacterBuildWithCharacterOcid() throws JsonProcessingException {
+        // given
+        final String expectedApiUrl = UriComponentsBuilder.fromHttpUrl(
+                        nexonCommonProperties.getBaseUrl() + mapleStoryMProperties.getGuildApiUri()
+                )
+                .queryParam("ocid", ocid)
+                .toUriString();
+
+        final CharacterGuild expectedCharacterBasic = MapleStoryMDtoFixtures.characterGuildBuild();
+        final String expectedResponse = objectMapper.writeValueAsString(expectedCharacterBasic);
+
+        mockRestServiceServer.expect(requestTo(expectedApiUrl))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_JSON));
+
+        // when
+        final CharacterGuild characterGuild = mapleStoryMApi.getCharacterGuild(ocid);
+
+        // then
+        assertThat(characterGuild.guildName()).isEqualTo(expectedCharacterBasic.guildName());
 
         mockRestServiceServer.verify();
     }
