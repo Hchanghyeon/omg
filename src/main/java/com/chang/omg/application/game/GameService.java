@@ -2,12 +2,12 @@ package com.chang.omg.application.game;
 
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.chang.omg.application.game.dto.RankingDataSave;
 import com.chang.omg.domains.game.domain.GameCharacterSearchLog;
 import com.chang.omg.domains.game.domain.GameType;
-import com.chang.omg.domains.game.repository.GameCharacterSearchLogRepository;
 import com.chang.omg.domains.rank.domain.CharacterInfo;
 import com.chang.omg.domains.rank.repository.GameRankingRedisRepository;
 import com.chang.omg.infrastructure.api.kartrider.KartRiderApi;
@@ -27,13 +27,12 @@ import com.chang.omg.presentation.game.dto.MapleStoryMCharacterInfoResponse;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class GameService {
 
     private final KartRiderApi kartRiderApi;
     private final MapleStoryMApi mapleStoryMApi;
-    private final GameCharacterSearchLogRepository gameCharacterSearchLogRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final GameRankingRedisRepository gameRankingRedisRepository;
 
     public MapleStoryMCharacterInfoResponse getMapleStoryMCharacterInfo(
@@ -78,17 +77,16 @@ public class GameService {
                 .characterName(characterName)
                 .build();
 
-        gameCharacterSearchLogRepository.save(gameCharacterSearchLog);
+        applicationEventPublisher.publishEvent(gameCharacterSearchLog);
 
         final CharacterInfo characterInfo = CharacterInfo.builder()
                 .worldName(worldName)
                 .characterName(characterName)
                 .build();
 
-        gameRankingRedisRepository.createOrIncrementScore(gameType, characterInfo);
+        applicationEventPublisher.publishEvent(new RankingDataSave(gameType, characterInfo));
     }
 
-    @Transactional(readOnly = true)
     public List<CharacterRankingResponse> getGameCharacterSearchRank(final GameType gameType) {
         return gameRankingRedisRepository.findGameCharacterSearchRank(gameType);
     }
