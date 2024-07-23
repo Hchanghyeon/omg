@@ -48,8 +48,6 @@ public class GameService {
     ) {
         final Character character = mapleStoryMApi.getCharacterOcid(characterName, worldName); // Blocking
 
-        saveGameCharacterSearchLog(GameType.MAPLESTORYM, worldName, characterName);
-
         final CompletableFuture<MapleStoryMCharacterInfoResponse> future = CompletableFuture.supplyAsync(() -> {
             final Mono<CharacterBasic> characterBasic = mapleStoryMApi.getCharacterBasic(character.ocid());
             final Mono<CharacterItemEquipment> characterItemEquipment = mapleStoryMApi.getCharacterItem(
@@ -73,14 +71,14 @@ public class GameService {
         } catch (ExecutionException | InterruptedException exception) {
             log.error("ErrorTrace", exception);
             throw new ApiException(ApiExceptionCode.API_UNKNOWN_ERROR);
+        } finally {
+            saveGameCharacterSearchLog(GameType.MAPLESTORYM, worldName, characterName);
         }
     }
 
     public KartRiderUserInfoResponse getKartRiderUserInfo(final String userName) {
         final User user = kartRiderApi.getUserOuid(userName);
         final String ouid = user.ouidInfo().get(0).ouid();
-
-        saveGameCharacterSearchLog(GameType.KARTRIDER, null, userName);
 
         final CompletableFuture<KartRiderUserInfoResponse> future = CompletableFuture.supplyAsync(() -> {
             final Mono<UserBasic> userBasic = kartRiderApi.getUserBasic(ouid);
@@ -97,6 +95,8 @@ public class GameService {
         } catch (ExecutionException | InterruptedException exception) {
             log.error("ErrorTrace", exception);
             throw new ApiException(ApiExceptionCode.API_UNKNOWN_ERROR);
+        } finally {
+            saveGameCharacterSearchLog(GameType.KARTRIDER, null, userName);
         }
     }
 
