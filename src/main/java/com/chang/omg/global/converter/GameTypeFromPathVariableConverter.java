@@ -2,7 +2,7 @@ package com.chang.omg.global.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.chang.omg.domains.game.domain.GameType;
+import com.chang.omg.domain.game.domain.GameType;
 
 public final class GameTypeFromPathVariableConverter implements Converter<String, GameType> {
 
