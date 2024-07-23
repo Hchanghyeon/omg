@@ -41,11 +41,4 @@ jobs:
           username: ${{ secrets.NAS_USERNAME }}
           password: ${{ secrets.NAS_PASSWORD }}
           script: |
-            # 기존에 돌아가고 있던 서비스 종료시키기
-            pkill -f 'java.*omg-0.0.1-SNAPSHOT.jar'
-
-            # 새로 배포된 파일 권한 수정
-            chmod 755 ${{ secrets.DIRECTORY_PATH}}/omg-0.0.1-SNAPSHOT.jar
-
-            # 새로운 서비스 실행
-            nohup java -Dspring.profiles.active=dev -jar ${{ secrets.DIRECTORY_PATH}}/omg-0.0.1-SNAPSHOT.jar > ${{ secrets.DIRECTORY_PATH}}/omg-server.log 2>&1 &
+            ~/omg/build/libs/deploy.sh
