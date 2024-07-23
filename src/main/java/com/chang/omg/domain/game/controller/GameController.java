@@ -1,18 +1,13 @@
 package com.chang.omg.domain.game.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.chang.omg.domain.game.controller.dto.CharacterRankingResponse;
 import com.chang.omg.domain.game.controller.dto.KartRiderUserInfoResponse;
 import com.chang.omg.domain.game.controller.dto.MapleStoryMCharacterInfoResponse;
-import com.chang.omg.domain.game.domain.GameType;
 import com.chang.omg.domain.game.service.GameService;
 
 import lombok.RequiredArgsConstructor;
@@ -42,11 +37,5 @@ public class GameController {
         final KartRiderUserInfoResponse kartRiderUserInfoResponse = gameService.getKartRiderUserInfo(userName);
 
         return ResponseEntity.ok(kartRiderUserInfoResponse);
-    }
-
-    @GetMapping("/{gameType}/rank")
-    public ResponseEntity<List<CharacterRankingResponse>> getGameCharacterSearchRank(
-            @PathVariable final GameType gameType) {
-        return ResponseEntity.ok(gameService.getGameCharacterSearchRank(gameType));
     }
 }

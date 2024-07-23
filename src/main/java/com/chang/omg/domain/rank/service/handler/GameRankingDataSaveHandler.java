@@ -1,4 +1,4 @@
-package com.chang.omg.domain.game.service.handler;
+package com.chang.omg.domain.rank.service.handler;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.retry.annotation.Backoff;
@@ -7,8 +7,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.chang.omg.domain.game.service.dto.RankingDataSave;
 import com.chang.omg.domain.rank.domain.GameRankingRedisRepository;
+import com.chang.omg.domain.rank.service.dto.RankingEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +27,7 @@ public class GameRankingDataSaveHandler {
             backoff = @Backoff(delay = 3000, multiplier = 1.5, maxDelay = 10000),
             listeners = "retryHandler"
     )
-    public void gameRankingDataSave(final RankingDataSave rankingDataSave) {
-        gameRankingRedisRepository.createOrIncrementScore(rankingDataSave.gameType(), rankingDataSave.characterInfo());
+    public void gameRankingDataSave(final RankingEvent rankingEvent) {
+        gameRankingRedisRepository.createOrIncrementScore(rankingEvent.gameType(), rankingEvent.characterInfo());
     }
 }

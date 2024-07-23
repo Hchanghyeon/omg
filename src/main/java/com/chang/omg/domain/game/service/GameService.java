@@ -1,16 +1,13 @@
 package com.chang.omg.domain.game.service;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import com.chang.omg.domain.game.controller.dto.CharacterRankingResponse;
 import com.chang.omg.domain.game.controller.dto.KartRiderUserInfoResponse;
 import com.chang.omg.domain.game.controller.dto.MapleStoryMCharacterInfoResponse;
-import com.chang.omg.domain.game.domain.GameCharacterSearchLog;
 import com.chang.omg.domain.game.domain.GameType;
 import com.chang.omg.domain.game.service.api.kartrider.KartRiderApi;
 import com.chang.omg.domain.game.service.api.kartrider.dto.User;
@@ -22,9 +19,9 @@ import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterBasic;
 import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterGuild;
 import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterItemEquipment;
 import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterStat;
-import com.chang.omg.domain.game.service.dto.RankingDataSave;
+import com.chang.omg.domain.game.service.dto.GameCharacterSearchEvent;
 import com.chang.omg.domain.rank.domain.CharacterInfo;
-import com.chang.omg.domain.rank.domain.GameRankingRedisRepository;
+import com.chang.omg.domain.rank.service.dto.RankingEvent;
 import com.chang.omg.global.exception.ApiException;
 import com.chang.omg.global.exception.ApiExceptionCode;
 
@@ -40,7 +37,6 @@ public class GameService {
     private final KartRiderApi kartRiderApi;
     private final MapleStoryMApi mapleStoryMApi;
     private final ApplicationEventPublisher applicationEventPublisher;
-    private final GameRankingRedisRepository gameRankingRedisRepository;
 
     public MapleStoryMCharacterInfoResponse getMapleStoryMCharacterInfo(
             final String characterName,
@@ -105,23 +101,23 @@ public class GameService {
             final String worldName,
             final String characterName
     ) {
-        final GameCharacterSearchLog gameCharacterSearchLog = GameCharacterSearchLog.builder()
-                .gameType(gameType)
-                .worldName(worldName)
-                .characterName(characterName)
-                .build();
-
-        applicationEventPublisher.publishEvent(gameCharacterSearchLog);
+        applicationEventPublisher.publishEvent(
+                GameCharacterSearchEvent.builder()
+                        .gameType(gameType)
+                        .worldName(worldName)
+                        .characterName(characterName)
+        );
 
         final CharacterInfo characterInfo = CharacterInfo.builder()
                 .worldName(worldName)
                 .characterName(characterName)
                 .build();
 
-        applicationEventPublisher.publishEvent(new RankingDataSave(gameType, characterInfo));
-    }
-
-    public List<CharacterRankingResponse> getGameCharacterSearchRank(final GameType gameType) {
-        return gameRankingRedisRepository.findGameCharacterSearchRank(gameType);
+        applicationEventPublisher.publishEvent(
+                RankingEvent.builder()
+                        .gameType(gameType)
+                        .characterInfo(characterInfo)
+                        .build()
+        );
     }
 }

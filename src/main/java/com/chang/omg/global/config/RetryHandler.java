@@ -13,7 +13,7 @@ public class RetryHandler implements RetryListener {
 
     @Override
     public <T, E extends Throwable> boolean open(final RetryContext context, final RetryCallback<T, E> callback) {
-        log.warn("Retry attempt started: {}", context.getRetryCount());
+        log.info("Retry attempt started: {}", context.getRetryCount());
         return true;
     }
 

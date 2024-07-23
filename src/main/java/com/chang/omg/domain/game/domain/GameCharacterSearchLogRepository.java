@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.chang.omg.domain.game.controller.dto.CharacterRankingResponse;
+import com.chang.omg.domain.rank.controller.dto.CharacterRankingResponse;
 
 public interface GameCharacterSearchLogRepository extends JpaRepository<GameCharacterSearchLog, Long> {
 
     @Deprecated
     @Query("""
-            SELECT new com.chang.omg.presentation.game.dto.CharacterRankingResponse
+            SELECT new com.chang.omg.domain.rank.controller.dto.CharacterRankingResponse
             (g.worldName, g.characterName, COUNT(g.characterName))
             FROM GameCharacterSearchLog g 
             WHERE g.createdAt > CURRENT_DATE AND g.gameType =:gameType

@@ -8,8 +8,8 @@ import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Repository;
 
-import com.chang.omg.domain.game.controller.dto.CharacterRankingResponse;
 import com.chang.omg.domain.game.domain.GameType;
+import com.chang.omg.domain.rank.controller.dto.CharacterRankingResponse;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
