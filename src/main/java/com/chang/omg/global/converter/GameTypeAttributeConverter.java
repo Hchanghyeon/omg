@@ -1,6 +1,6 @@
 package com.chang.omg.global.converter;
 
-import com.chang.omg.domains.game.domain.GameType;
+import com.chang.omg.domain.game.domain.GameType;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Convert;

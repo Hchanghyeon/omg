@@ -3,11 +3,11 @@ package com.chang.omg.fixture.dto.maplestorym;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chang.omg.infrastructure.api.maplestorym.dto.Character;
-import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterBasic;
-import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterGuild;
-import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterItemEquipment;
-import com.chang.omg.infrastructure.api.maplestorym.dto.CharacterStat;
+import com.chang.omg.domain.game.service.api.maplestorym.dto.Character;
+import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterBasic;
+import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterGuild;
+import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterItemEquipment;
+import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterStat;
 
 public final class MapleStoryMDtoFixtures {
 
