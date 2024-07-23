@@ -8,20 +8,6 @@ jobs:
   deploy-to-ec2:
     environment: dev
     runs-on: ubuntu-latest
-    env:
-      NEXON_BASE_URL: ${{ secrets.NEXON_BASE_URL }}
-      NEXON_HEADER_KEY: ${{ secrets.NEXON_HEADER_KEY }}
-      MAPLESTORYM_HEADER_VALUE: ${{ secrets.MAPLESTORYM_HEADER_VALUE }}
-      MAPLESTORYM_OCID_API_URI: ${{ secrets.MAPLESTORYM_OCID_API_URI }}
-      MAPLESTORYM_BASIC_API_URI: ${{ secrets.MAPLESTORYM_BASIC_API_URI }}
-      MAPLESTORYM_ITEM_API_URI: ${{ secrets.MAPLESTORYM_ITEM_API_URI }}
-      MAPLESTORYM_STAT_API_URI: ${{ secrets.MAPLESTORYM_STAT_API_URI }}
-      MAPLESTORYM_GUILD_API_URI: ${{ secrets.MAPLESTORYM_GUILD_API_URI }}
-      KARTRIDER_HEADER_VALUE: ${{ secrets.KARTRIDER_HEADER_VALUE }}
-      KARTRIDER_OUID_API_URI: ${{ secrets.KARTRIDER_OUID_API_URI }}
-      KARTRIDER_BASIC_API_URI: ${{ secrets.KARTRIDER_BASIC_API_URI }}
-      KARTRIDER_TITLE_API_URI: ${{ secrets.KARTRIDER_TITLE_API_URI }}
-
     steps:
       - name: Github Repository Checkout
         uses: actions/checkout@v3
@@ -46,4 +32,20 @@ jobs:
           password: ${{ secrets.NAS_PASSWORD }}
           source: "build/libs/*.jar"
           target: "/root/omg/"
-            
+
+      - name: Deploy to EC2 and Restart Service
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.NAS_HOST }}
+          port: ${{ secrets.NAS_PORT }}
+          username: ${{ secrets.NAS_USERNAME }}
+          password: ${{ secrets.NAS_PASSWORD }}
+          script: |
+            # 기존에 돌아가고 있던 서비스 종료시키기
+            pkill -f 'java.*omg-0.0.1-SNAPSHOT.jar'
+
+            # 새로 배포된 파일 권한 수정
+            chmod 755 ${{ secrets.DIRECTORY_PATH}}/omg-0.0.1-SNAPSHOT.jar
+
+            # 새로운 서비스 실행
+            nohup java -Dspring.profiles.active=dev -jar ${{ secrets.DIRECTORY_PATH}}/omg-0.0.1-SNAPSHOT.jar > ${{ secrets.DIRECTORY_PATH}}/omg-server.log 2>&1 &
