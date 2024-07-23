@@ -1,4 +1,4 @@
-package com.chang.omg.global.config;
+package com.chang.omg.global.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +17,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/games/maplestorym/**").permitAll()
-                                .requestMatchers("/games/kartrider/**").permitAll()
+                        auth.requestMatchers("/games/**").permitAll()
+                                .requestMatchers("/rank/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
