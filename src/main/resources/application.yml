@@ -8,6 +8,17 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
         query.in_clause_parameter_padding: true
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 api:
   nexon:
     common:
