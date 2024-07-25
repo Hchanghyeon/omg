@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 import org.springframework.util.StringUtils;
 
-import com.chang.omg.common.domain.BaseEntity;
 import com.chang.omg.domain.member.exception.MemberException;
 import com.chang.omg.domain.member.exception.MemberExceptionCode;
+import com.chang.omg.global.domain.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
