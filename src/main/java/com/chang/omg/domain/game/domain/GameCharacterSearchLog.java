@@ -2,8 +2,8 @@ package com.chang.omg.domain.game.domain;
 
 import java.util.Objects;
 
-import com.chang.omg.common.domain.BaseEntity;
 import com.chang.omg.global.converter.GameTypeAttributeConverter;
+import com.chang.omg.global.domain.BaseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
