@@ -1,4 +1,4 @@
-package com.chang.omg.common.domain;
+package com.chang.omg.global.domain;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.chang.omg.domain.member.controller.dto;
+package com.chang.omg.domain.member.controller.dto.request;
 
 import java.time.LocalDate;
 
