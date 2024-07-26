@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/games/**", "/rank/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/members").permitAll()
-                                .requestMatchers("/members/verification-auth-code").permitAll()
+                                .requestMatchers("/members/verification-auth-code/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 );
