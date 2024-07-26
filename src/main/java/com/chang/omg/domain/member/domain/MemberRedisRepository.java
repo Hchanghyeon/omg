@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberRedisRepository {
 
     private static final String PREFIX_AUTH_CODE = "AUTH:";
-    private static final int AUTH_CODE_TTL = 120;
+    private static final int AUTH_CODE_TTL = 121;
     private final RedisTemplate<String, Object> redisTemplate;
     private ValueOperations<String, Object> valueOperations;
 
