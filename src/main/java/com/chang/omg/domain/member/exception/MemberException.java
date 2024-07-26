@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class MemberException extends BusinessException {
 
-    public MemberException(final ExceptionCode exceptionCode, final String rejectedValues) {
+    public MemberException(final ExceptionCode exceptionCode, final Object... rejectedValues) {
         super(exceptionCode, rejectedValues);
     }
 }

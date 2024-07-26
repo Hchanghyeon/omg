@@ -4,6 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.chang.omg.domain.auth.security.JwtTokenProvider;
 import com.chang.omg.domain.mail.service.MailMessageTemplate;
 import com.chang.omg.domain.mail.service.MailService;
 import com.chang.omg.domain.mail.service.MailSubjectTemplate;
@@ -26,6 +27,7 @@ public class MemberService {
 
     private final MailService mailService;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
     private final MemberRedisRepository memberRedisRepository;
 
@@ -72,9 +74,14 @@ public class MemberService {
         }
     }
 
-    public boolean verifyAuthCode(final MemberVerificationRequest memberVerificationRequest) {
-        final int authCode = memberRedisRepository.findAuthCodeByEmail(memberVerificationRequest.email());
+    public String verifyAuthCode(final MemberVerificationRequest memberVerificationRequest) {
+        final String email = memberVerificationRequest.email();
+        final int authCode = memberRedisRepository.findAuthCodeByEmail(email);
 
-        return authCode == memberVerificationRequest.authCode();
+        if (authCode != memberVerificationRequest.authCode()) {
+            throw new MemberException(MemberExceptionCode.MEMBER_AUTH_CODE_NOT_MATCHED);
+        }
+
+        return jwtTokenProvider.createRegisterToken(email);
     }
 }
