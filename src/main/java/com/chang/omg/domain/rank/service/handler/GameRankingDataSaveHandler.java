@@ -5,7 +5,6 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.chang.omg.domain.rank.domain.GameRankingRedisRepository;
 import com.chang.omg.domain.rank.service.dto.RankingEvent;
@@ -20,7 +19,6 @@ public class GameRankingDataSaveHandler {
 
     @Async
     @EventListener
-    @Transactional
     @Retryable(
             retryFor = Exception.class,
             maxAttempts = 5,
