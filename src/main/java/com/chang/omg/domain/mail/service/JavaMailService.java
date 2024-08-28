@@ -14,6 +14,7 @@ public class JavaMailService implements MailService {
 
     private final JavaMailSender mailSender;
 
+    @Override
     public void sendEmail(final EmailDetails emailDetails) {
         final SimpleMailMessage message = new SimpleMailMessage();
 
