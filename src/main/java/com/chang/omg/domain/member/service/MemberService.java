@@ -55,7 +55,6 @@ public class MemberService {
         verifyAuthCodeAlreadySaved(memberEmail);
 
         final int authCode = RandomUtils.createAuthCode();
-        memberAuthCodeRepository.saveAuthCodeWithEmail(authCode, memberEmail);
 
         mailService.sendEmail(
                 new EmailDetails(
@@ -64,6 +63,8 @@ public class MemberService {
                         memberEmail
                 )
         );
+        
+        memberAuthCodeRepository.saveAuthCodeWithEmail(authCode, memberEmail);
     }
 
     private void verifyAuthCodeAlreadySaved(final String memberEmail) {
