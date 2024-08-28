@@ -59,7 +59,7 @@ public class GameService {
                             tuple.getT4()
                     ))
                     .toFuture()
-                    .join(); // Blocking on the combined future to get the final result
+                    .join();
         });
 
         try {
