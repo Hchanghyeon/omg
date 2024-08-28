@@ -6,6 +6,6 @@ import com.chang.omg.domain.rank.domain.CharacterInfo;
 import lombok.Builder;
 
 @Builder
-public record RankingEvent(GameType gameType, CharacterInfo characterInfo) {
+public record GameRankingUpdateEvent(GameType gameType, CharacterInfo characterInfo) {
 
 }

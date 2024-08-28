@@ -21,7 +21,7 @@ import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterItemEquipm
 import com.chang.omg.domain.game.service.api.maplestorym.dto.CharacterStat;
 import com.chang.omg.domain.game.service.dto.GameCharacterSearchEvent;
 import com.chang.omg.domain.rank.domain.CharacterInfo;
-import com.chang.omg.domain.rank.service.dto.RankingEvent;
+import com.chang.omg.domain.rank.service.dto.GameRankingUpdateEvent;
 import com.chang.omg.global.exception.ApiException;
 import com.chang.omg.global.exception.ApiExceptionCode;
 
@@ -114,7 +114,7 @@ public class GameService {
                 .build();
 
         applicationEventPublisher.publishEvent(
-                RankingEvent.builder()
+                GameRankingUpdateEvent.builder()
                         .gameType(gameType)
                         .characterInfo(characterInfo)
                         .build()
