@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class MemberRedisRepository {
+public class MemberAuthCodeRedisRepository implements MemberAuthCodeRepository {
 
     private static final String PREFIX_AUTH_CODE = "AUTH:";
     private static final int AUTH_CODE_TTL = 121;
@@ -29,16 +29,19 @@ public class MemberRedisRepository {
         valueOperations = redisTemplate.opsForValue();
     }
 
+    @Override
     public void saveAuthCodeWithEmail(final int authCode, final String memberEmail) {
         valueOperations.set(PREFIX_AUTH_CODE + memberEmail, authCode, AUTH_CODE_TTL, TimeUnit.SECONDS);
     }
 
+    @Override
     public boolean existsAuthCodeByEmail(final String memberEmail) {
         final Object authCode = valueOperations.get(PREFIX_AUTH_CODE + memberEmail);
 
         return !Objects.isNull(authCode);
     }
 
+    @Override
     public int findAuthCodeByEmail(final String memberEmail) {
         final Object authCode = valueOperations.get(PREFIX_AUTH_CODE + memberEmail);
 

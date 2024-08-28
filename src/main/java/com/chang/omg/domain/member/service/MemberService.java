@@ -13,7 +13,7 @@ import com.chang.omg.domain.member.controller.dto.request.MemberAuthCodeRequest;
 import com.chang.omg.domain.member.controller.dto.request.MemberCreateRequest;
 import com.chang.omg.domain.member.controller.dto.request.MemberVerificationRequest;
 import com.chang.omg.domain.member.domain.Member;
-import com.chang.omg.domain.member.domain.MemberRedisRepository;
+import com.chang.omg.domain.member.domain.MemberAuthCodeRepository;
 import com.chang.omg.domain.member.domain.MemberRepository;
 import com.chang.omg.domain.member.exception.MemberException;
 import com.chang.omg.domain.member.exception.MemberExceptionCode;
@@ -29,7 +29,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
-    private final MemberRedisRepository memberRedisRepository;
+    private final MemberAuthCodeRepository memberAuthCodeRepository;
 
     @Transactional
     public Long createMember(final MemberCreateRequest memberCreateRequest) {
@@ -55,7 +55,7 @@ public class MemberService {
         verifyAuthCodeAlreadySaved(memberEmail);
 
         final int authCode = RandomUtils.createAuthCode();
-        memberRedisRepository.saveAuthCodeWithEmail(authCode, memberEmail);
+        memberAuthCodeRepository.saveAuthCodeWithEmail(authCode, memberEmail);
 
         mailService.sendEmail(
                 new EmailDetails(
@@ -67,7 +67,7 @@ public class MemberService {
     }
 
     private void verifyAuthCodeAlreadySaved(final String memberEmail) {
-        final boolean isAuthCodeExists = memberRedisRepository.existsAuthCodeByEmail(memberEmail);
+        final boolean isAuthCodeExists = memberAuthCodeRepository.existsAuthCodeByEmail(memberEmail);
 
         if (isAuthCodeExists) {
             throw new MemberException(MemberExceptionCode.MEMBER_ALREADY_GET_AUTH_CODE, memberEmail);
@@ -76,7 +76,7 @@ public class MemberService {
 
     public String verifyAuthCode(final MemberVerificationRequest memberVerificationRequest) {
         final String email = memberVerificationRequest.email();
-        final int authCode = memberRedisRepository.findAuthCodeByEmail(email);
+        final int authCode = memberAuthCodeRepository.findAuthCodeByEmail(email);
 
         if (authCode != memberVerificationRequest.authCode()) {
             throw new MemberException(MemberExceptionCode.MEMBER_AUTH_CODE_NOT_MATCHED);
