@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.chang.omg.domain.game.domain.GameType;
 import com.chang.omg.domain.rank.controller.dto.CharacterRankingResponse;
-import com.chang.omg.domain.rank.domain.GameRankingRedisRepository;
+import com.chang.omg.domain.rank.domain.GameRankingRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RankingService {
 
-    private final GameRankingRedisRepository gameRankingRedisRepository;
+    private final GameRankingRepository gameRankingRepository;
 
     public List<CharacterRankingResponse> getGameCharacterSearchRank(final GameType gameType) {
-        return gameRankingRedisRepository.findGameCharacterSearchRank(gameType);
+        return gameRankingRepository.findGameCharacterSearchRank(gameType);
     }
 }
